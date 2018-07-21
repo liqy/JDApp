@@ -106,7 +106,7 @@ public class ShopListActivity extends AppCompatActivity {
 
                 //添加轮播图
                 View view=View.inflate(ShopListActivity.this,R.layout.layout_banner,null);
-                Banner banner = view.findViewById(R.id.banner);
+                Banner banner = view.findViewById(R.id.banner);//TODO 注意这里方法调用
                 //设置图片加载器
                 banner.setImageLoader(new GlideImageLoader());
                 //设置图片集合
