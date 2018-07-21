@@ -1,4 +1,4 @@
-package com.liqy.jdapp.view.adapter;
+package com.liqy.jdapp.category.view.adapter;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.liqy.jdapp.R;
-import com.liqy.jdapp.model.SetMeal;
+import com.liqy.jdapp.category.model.SetMeal;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,14 @@
-package com.liqy.jdapp.present;
+package com.liqy.jdapp.category.present;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.liqy.jdapp.MainActivity;
-import com.liqy.jdapp.model.ITask;
-import com.liqy.jdapp.model.ResData;
-import com.liqy.jdapp.model.Task;
-import com.liqy.jdapp.model.network.OkCallback;
-import com.liqy.jdapp.view.IView;
+import com.liqy.jdapp.category.CategoryActivity;
+import com.liqy.jdapp.category.model.ITask;
+import com.liqy.jdapp.category.model.ResData;
+import com.liqy.jdapp.category.model.Task;
+import com.liqy.jdapp.network.OkCallback;
+import com.liqy.jdapp.category.view.IView;
 
 /**
  * @file FileName
@@ -21,7 +21,7 @@ public class MyPresent extends OkCallback implements IPresent {
     ITask task;
     IView view;
 
-    public MyPresent(MainActivity activity) {
+    public MyPresent(CategoryActivity activity) {
         task = new Task();
         view = activity;
     }

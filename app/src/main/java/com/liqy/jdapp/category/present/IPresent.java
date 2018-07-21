@@ -1,4 +1,4 @@
-package com.liqy.jdapp.present;
+package com.liqy.jdapp.category.present;
 
 /**
  * @file FileName

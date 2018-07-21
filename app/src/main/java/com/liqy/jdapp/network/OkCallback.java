@@ -1,4 +1,4 @@
-package com.liqy.jdapp.model.network;
+package com.liqy.jdapp.network;
 
 import java.io.IOException;
 

@@ -1,6 +1,4 @@
-package com.liqy.jdapp.model;
-
-import java.util.List;
+package com.liqy.jdapp.category.model;
 
 /**
  * @file FileName

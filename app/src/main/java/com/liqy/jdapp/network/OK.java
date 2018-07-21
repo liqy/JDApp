@@ -1,4 +1,4 @@
-package com.liqy.jdapp.model.network;
+package com.liqy.jdapp.network;
 
 import android.os.Handler;
 
@@ -6,6 +6,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * @file FileName
@@ -26,8 +27,13 @@ public class OK {
     }
 
     private OK() {
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         client = new OkHttpClient.Builder()
                 //TODO 拦截器，打印日志
+                .addInterceptor(logging)
                 .build();
 
         handler = new Handler();

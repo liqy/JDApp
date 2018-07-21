@@ -1,6 +1,4 @@
-package com.liqy.jdapp.model;
-
-import com.liqy.jdapp.model.network.OK;
+package com.liqy.jdapp.category.model;
 
 import java.util.List;
 

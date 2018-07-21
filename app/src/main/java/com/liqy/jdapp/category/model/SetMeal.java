@@ -1,4 +1,4 @@
-package com.liqy.jdapp.model;
+package com.liqy.jdapp.category.model;
 
 import java.util.List;
 

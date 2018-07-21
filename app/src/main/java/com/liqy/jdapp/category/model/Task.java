@@ -1,7 +1,7 @@
-package com.liqy.jdapp.model;
+package com.liqy.jdapp.category.model;
 
-import com.liqy.jdapp.model.network.OK;
-import com.liqy.jdapp.model.network.OkCallback;
+import com.liqy.jdapp.network.OK;
+import com.liqy.jdapp.network.OkCallback;
 
 /**
  * @file FileName

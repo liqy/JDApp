@@ -1,4 +1,4 @@
-package com.liqy.jdapp.view.adapter;
+package com.liqy.jdapp.category.view.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.liqy.jdapp.R;
-import com.liqy.jdapp.model.Spus;
+import com.liqy.jdapp.category.model.Spus;
 
 import java.util.ArrayList;
 import java.util.List;

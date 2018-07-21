@@ -1,6 +1,6 @@
-package com.liqy.jdapp.view;
+package com.liqy.jdapp.category.view;
 
-import com.liqy.jdapp.model.SetMeal;
+import com.liqy.jdapp.category.model.SetMeal;
 
 import java.util.List;
 
