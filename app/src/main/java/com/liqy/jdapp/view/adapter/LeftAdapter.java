@@ -1,5 +1,6 @@
 package com.liqy.jdapp.view.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ import java.util.List;
 public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.TextViewHolder> {
 
     List<SetMeal> list;
-
     ItemClickListener listener;
 
     public LeftAdapter() {
@@ -55,19 +55,33 @@ public class LeftAdapter extends RecyclerView.Adapter<LeftAdapter.TextViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TextViewHolder textViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final TextViewHolder textViewHolder, int i) {
         final SetMeal meal = list.get(i);
         textViewHolder.textView.setText(meal.name);
+        //根据选中状态更新条目背景
+        if (meal.isClick) {
+            textViewHolder.itemView.setBackgroundColor(Color.GRAY);
+        } else {
+            textViewHolder.itemView.setBackgroundColor(Color.WHITE);
+        }
+
         textViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 listener.onItemClick(meal);
-                //TODO
-                if (meal.isClick){
 
-                }else {
-
+                //遍历集合 ，修改中状态
+                for (SetMeal temp : list) {
+                    if (temp.id == meal.id) {//判断是否为当前条目
+                        temp.isClick = true;
+                    } else {
+                        temp.isClick = false;
+                    }
                 }
+                //帅新当前页面
+                notifyDataSetChanged();
+
             }
         });
     }

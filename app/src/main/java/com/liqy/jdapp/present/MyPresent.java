@@ -44,7 +44,7 @@ public class MyPresent extends OkCallback implements IPresent {
 
     @Override
     public void onFailed(String json) {
-
+        Log.d("UI", json);
     }
 
     /**

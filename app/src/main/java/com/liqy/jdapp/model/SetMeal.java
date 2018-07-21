@@ -17,4 +17,5 @@ public class SetMeal {
     public List<Spus> spus;
 
     public boolean isClick;
+    public int pos;
 }

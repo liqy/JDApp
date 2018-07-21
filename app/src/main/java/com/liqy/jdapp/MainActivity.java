@@ -54,14 +54,15 @@ public class MainActivity extends AppCompatActivity implements IView {
         leftAdapter.setListener(new LeftAdapter.ItemClickListener() {
             @Override
             public void onItemClick(SetMeal meal) {
-                Toast.makeText(MainActivity.this,meal.name,Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, meal.name, Toast.LENGTH_SHORT).show();
                 rightAdapter.addData(meal.spus);
             }
         });
 
+
         //右边
-        rightRecycler=(RecyclerView)findViewById(R.id.right_recycler);
-        rightAdapter=new RightAdapter();
+        rightRecycler = (RecyclerView) findViewById(R.id.right_recycler);
+        rightAdapter = new RightAdapter();
 
         final LinearLayoutManager rightManager = new LinearLayoutManager(this);
         rightRecycler.setLayoutManager(rightManager);
@@ -84,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements IView {
     public void showData(List<SetMeal> meals) {
         //初始化数据
         leftAdapter.addData(meals);
-        rightAdapter.addData(meals.get(0).spus);
+        SetMeal meal = meals.get(0);
+        meal.isClick = true;//设置默认点击
+        rightAdapter.addData(meal.spus);
     }
 }
