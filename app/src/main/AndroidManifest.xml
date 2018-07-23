@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".category.CategoryActivity" />
-        <activity android:name=".test3.view.ShopListActivity"></activity>
+        <activity android:name=".test3.view.ShopListActivity" />
+        <activity android:name=".cart.CartActivity"></activity>
     </application>
 
 </manifest>
