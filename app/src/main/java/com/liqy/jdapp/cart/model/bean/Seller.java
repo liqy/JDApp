@@ -12,4 +12,5 @@ public class Seller {
     public  String sellerName;
     public  int sellerid;
     public List<Product> list;
+    public boolean isCheck;
 }

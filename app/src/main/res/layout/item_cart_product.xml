@@ -3,10 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txt_product_name"
-        android:textSize="14sp"
+    <RelativeLayout
+        android:id="@+id/layout_arrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/txt_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/ic_arrow"
+            android:text="逛一逛" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/txt_arrow"
+            android:text="优惠信息" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/layout_arrow"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/img_select"
+        android:src="@drawable/ic_checked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/img_select"
+        android:id="@+id/img_product"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_below="@id/layout_arrow"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_toRightOf="@+id/img_product"
+        android:layout_alignTop="@+id/img_product"
+        android:id="@+id/txt_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
 
 </RelativeLayout>
