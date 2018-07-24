@@ -28,10 +28,12 @@ public class CartAdapter extends BaseExpandableListAdapter {
     LayoutInflater inflater;
     private Context context;
 
-    private TextView txt_total_price;
-    private ImageView img_check_all;
+    private TextView txt_total_price;//合计总价
+
+    private ImageView img_check_all;//全选状态UI更新
+
     //全选标志
-    private boolean isCheckAll = false;
+    private boolean isCheckAll = false;//全选状态
 
     public CartAdapter(Context context) {
         this.sellers = new ArrayList<>();
