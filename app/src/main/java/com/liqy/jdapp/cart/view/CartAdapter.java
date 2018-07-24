@@ -25,9 +25,11 @@ import java.util.List;
 public class CartAdapter extends BaseExpandableListAdapter {
 
     List<Seller> sellers;
-    private Context context;
     LayoutInflater inflater;
+    private Context context;
 
+    private TextView txt_total_price;
+    private ImageView img_check_all;
     //全选标志
     private boolean isCheckAll = false;
 
@@ -35,6 +37,14 @@ public class CartAdapter extends BaseExpandableListAdapter {
         this.sellers = new ArrayList<>();
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+    }
+
+    public void setTotalPrice(TextView txt_total_price) {
+        this.txt_total_price = txt_total_price;
+    }
+
+    public void setCheckAll(ImageView img_check_all) {
+        this.img_check_all = img_check_all;
     }
 
     /**
@@ -61,9 +71,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
     /**
      * 默认执行一次全选，在第一次加载完数据时
      *
-     * @param img_check_all
+     * @param
      */
-    public void checkAll(ImageView img_check_all) {
+    public void checkAll() {
 
         isCheckAll = !isCheckAll;//取反
 
@@ -72,13 +82,13 @@ public class CartAdapter extends BaseExpandableListAdapter {
             seller.isCheck = isCheckAll;
 
             //遍历产品
-            List<Product> products=seller.list;
-            for (Product product: products) {
-               if (isCheckAll){
-                   product.selected=1;
-               }else {
-                   product.selected=0;
-               }
+            List<Product> products = seller.list;
+            for (Product product : products) {
+                if (isCheckAll) {
+                    product.selected = 1;
+                } else {
+                    product.selected = 0;
+                }
             }
         }
 
@@ -89,6 +99,39 @@ public class CartAdapter extends BaseExpandableListAdapter {
             img_check_all.setImageResource(R.drawable.ic_uncheck);
         }
         notifyDataSetChanged();
+    }
+
+    /**
+     * 计算所选产品价格
+     */
+    public void sumPrice() {
+        int total = 0;//计算总价
+        int uncheck = 0;
+        for (Seller seller : sellers) {
+            if (seller.isCheck) {//选中的店铺
+                for (Product product : seller.list) {
+                    if (product.selected == 1) {//选中的产品的价格计算
+                        total = total + product.price * product.num;
+                    }
+                }
+            } else {
+                uncheck += 1;//未选中的加1
+            }
+        }
+
+        if (uncheck > 0) {//判断是否全选
+            isCheckAll = false;
+        } else {
+            isCheckAll = true;
+        }
+
+        if (isCheckAll) {//全选的UI更新
+            img_check_all.setImageResource(R.drawable.ic_checked);
+        } else {
+            img_check_all.setImageResource(R.drawable.ic_uncheck);
+        }
+
+        txt_total_price.setText("合计￥" + total);
     }
 
     @Override
@@ -144,7 +187,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         Seller seller = getGroup(i);
         holder.sellerName.setText(seller.sellerName);
 
-        // 择
+        // 选择
         if (seller.isCheck) {
             holder.sellerCheck.setImageResource(R.drawable.ic_checked);
         } else {
@@ -155,7 +198,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(final int i, int i1, boolean b, View view, ViewGroup viewGroup) {
         ProductViewHolder holder;
 
         if (view == null) {
@@ -166,14 +209,46 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder = (ProductViewHolder) view.getTag();
         }
 
-        Product product = getChild(i, i1);
+        final Product product = getChild(i, i1);
         holder.productName.setText(product.title);
+        holder.productPrice.setText("￥" + product.price);
 
         if (product.selected == 1) {//选中状态
             holder.productCheck.setImageResource(R.drawable.ic_checked);
         } else {
             holder.productCheck.setImageResource(R.drawable.ic_uncheck);
         }
+
+        holder.productCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //设置选中状态
+                if (product.selected == 1) {
+                    product.selected = 0;
+                } else {
+                    product.selected = 1;
+                }
+
+                Seller seller = getGroup(i);
+                int sum = 0;
+                for (Product product : seller.list) {
+                    if (product.selected == 1) {//判断当前店铺有无选中产品
+                        sum = +1;
+                    }
+                }
+
+                if (sum == 0) {
+                    seller.isCheck = false;
+                } else {
+                    seller.isCheck = true;
+                }
+
+                //计算价格
+                sumPrice();
+
+                notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
@@ -201,13 +276,13 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     static class ProductViewHolder {
         TextView productName;
+        TextView productPrice;
         ImageView productCheck;
-
 
         public ProductViewHolder(View view) {
             productName = (TextView) view.findViewById(R.id.txt_product_name);
+            productPrice = (TextView) view.findViewById(R.id.txt_product_price);
             productCheck = (ImageView) view.findViewById(R.id.img_select);
-
         }
 
     }

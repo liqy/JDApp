@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.liqy.jdapp.R;
@@ -23,6 +24,7 @@ public class CartActivity extends AppCompatActivity implements ICartView {
     CartPresent present;
     LinearLayout btn_check_all;
     ImageView img_check_all;
+    TextView txt_total_price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,14 @@ public class CartActivity extends AppCompatActivity implements ICartView {
             @Override
             public void onClick(View view) {
                 //TODO 全选 反选
-                cartAdapter.checkAll(img_check_all);
+                cartAdapter.checkAll();
             }
         });
+
+        txt_total_price=(TextView)findViewById(R.id.txt_total_price);
+
+        cartAdapter.setTotalPrice(txt_total_price);
+        cartAdapter.setCheckAll(img_check_all);
     }
 
     @Override
@@ -64,7 +71,9 @@ public class CartActivity extends AppCompatActivity implements ICartView {
     public void showCart(List<Seller> sellers) {
         cartAdapter.addData(sellers);
         cartAdapter.expandGroup(listView);
-        cartAdapter.checkAll(img_check_all);
+        cartAdapter.checkAll();
+
+        cartAdapter.sumPrice();
     }
 
     @Override

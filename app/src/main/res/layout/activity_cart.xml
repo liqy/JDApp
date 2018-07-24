@@ -36,6 +36,18 @@
 
         </LinearLayout>
 
+        <TextView
+            android:textColor="@color/colorPrimaryDark"
+            android:text="合计:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/btn_check_all"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/txt_total_price"
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
     <ExpandableListView

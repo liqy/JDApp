@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:paddingLeft="16dp"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -28,32 +29,49 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/layout_arrow"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:id="@+id/img_select"
-        android:src="@drawable/ic_checked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <ImageView
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/img_select"
-        android:id="@+id/img_product"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_below="@id/layout_arrow"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:layout_toRightOf="@+id/img_product"
-        android:layout_alignTop="@+id/img_product"
-        android:id="@+id/txt_product_name"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:layout_below="@id/layout_arrow">
+
+        <ImageView
+            android:id="@+id/img_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_checked" />
+
+        <ImageView
+            android:id="@+id/img_product"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_select"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/txt_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/img_product"
+            android:layout_toRightOf="@+id/img_product"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@+id/txt_product_name"
+            android:layout_toRightOf="@+id/img_product"
+            android:textSize="14sp" />
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
