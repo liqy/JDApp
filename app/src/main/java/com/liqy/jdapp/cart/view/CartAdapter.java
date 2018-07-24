@@ -24,12 +24,11 @@ import java.util.List;
  */
 public class CartAdapter extends BaseExpandableListAdapter {
 
-    List<Seller> sellers;
-    LayoutInflater inflater;
+    private List<Seller> sellers;
+    private LayoutInflater inflater;
     private Context context;
 
     private TextView txt_total_price;//合计总价
-
     private ImageView img_check_all;//全选状态UI更新
 
     //全选标志
@@ -170,7 +169,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
@@ -186,7 +185,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder = (SellerViewHolder) view.getTag();
         }
 
-        Seller seller = getGroup(i);
+        final Seller seller = getGroup(i);
         holder.sellerName.setText(seller.sellerName);
 
         // 选择
@@ -196,53 +195,23 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder.sellerCheck.setImageResource(R.drawable.ic_uncheck);
         }
 
-        return view;
-    }
-
-    @Override
-    public View getChildView(final int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        ProductViewHolder holder;
-
-        if (view == null) {
-            view = inflater.inflate(R.layout.item_cart_product, viewGroup, false);
-            holder = new ProductViewHolder(view);
-            view.setTag(holder);
-        } else {
-            holder = (ProductViewHolder) view.getTag();
-        }
-
-        final Product product = getChild(i, i1);
-        holder.productName.setText(product.title);
-        holder.productPrice.setText("￥" + product.price);
-
-        if (product.selected == 1) {//选中状态
-            holder.productCheck.setImageResource(R.drawable.ic_checked);
-        } else {
-            holder.productCheck.setImageResource(R.drawable.ic_uncheck);
-        }
-
-        holder.productCheck.setOnClickListener(new View.OnClickListener() {
+        holder.sellerCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //设置选中状态
-                if (product.selected == 1) {
-                    product.selected = 0;
-                } else {
-                    product.selected = 1;
-                }
+                List<Product> products = seller.list;
 
-                Seller seller = getGroup(i);
-                int sum = 0;
-                for (Product product : seller.list) {
-                    if (product.selected == 1) {//判断当前店铺有无选中产品
-                        sum = +1;
-                    }
-                }
-
-                if (sum == 0) {
+                if (seller.isCheck == true) {//修改店铺的选中状态
                     seller.isCheck = false;
                 } else {
                     seller.isCheck = true;
+                }
+
+                for (Product product : products) {//修改产品的选中状态
+                    if (seller.isCheck) {
+                        product.selected = 1;
+                    } else {
+                        product.selected = 0;
+                    }
                 }
 
                 //计算价格
@@ -256,16 +225,98 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    public View getChildView(final int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+
+        ProductViewHolder holder;
+
+        if (view == null) {
+            view = inflater.inflate(R.layout.item_cart_product, viewGroup, false);
+            holder = new ProductViewHolder(view);
+            view.setTag(holder);
+        } else {
+            holder = (ProductViewHolder) view.getTag();
+        }
+
+        final Product product = getChild(i, i1);
+
+        holder.productName.setText(product.title);
+        holder.productPrice.setText("￥" + product.price);
+
+        //选中状态UI更新
+        if (product.selected == 1) {
+            holder.productCheck.setImageResource(R.drawable.ic_checked);
+        } else {
+            holder.productCheck.setImageResource(R.drawable.ic_uncheck);
+        }
+
+        //设置选中监听
+        holder.productCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickProductCheck(product, i);
+            }
+        });
+
+        holder.addSumView.setSumClickListener(new AddSumView.SumClickListener() {
+            @Override
+            public void sumClick(int psum) {
+                product.num = psum;
+                sumPrice();
+            }
+        });
+
+
+        return view;
+    }
+
+    @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
+    }
+
+    /**
+     * 点击产品选中按钮
+     *
+     * @param product 产品
+     * @param spos    商家位置
+     */
+    private void clickProductCheck(Product product, int spos) {
+        //设置选中状态
+        if (product.selected == 1) {
+            product.selected = 0;
+        } else {
+            product.selected = 1;
+        }
+
+        //获取当前商品的店铺信息
+        Seller seller = getGroup(spos);
+
+        int sum = 0;//统计产品选中数量
+
+        for (Product p : seller.list) {
+            if (p.selected == 1) {//判断当前店铺有无选中产品
+                sum = +1;//统计数量
+            }
+        }
+
+        if (sum == 0) {//无产品选中
+            seller.isCheck = false;
+        } else {//有产品选中
+            seller.isCheck = true;
+        }
+
+        //计算价格
+        sumPrice();
+
+        notifyDataSetChanged();
     }
 
     /**
      * 商家
      */
     static class SellerViewHolder {
-        TextView sellerName;
-        ImageView sellerCheck;
+        TextView sellerName;//商家名称
+        ImageView sellerCheck;//选中按钮
 
         public SellerViewHolder(View view) {
             sellerName = (TextView) view.findViewById(R.id.txt_seller_name);
@@ -277,14 +328,17 @@ public class CartAdapter extends BaseExpandableListAdapter {
      * 产品
      */
     static class ProductViewHolder {
-        TextView productName;
-        TextView productPrice;
-        ImageView productCheck;
+        TextView productName;//产品名称
+        TextView productPrice;//产品价格
+        ImageView productCheck;//选中按钮
+
+        AddSumView addSumView;
 
         public ProductViewHolder(View view) {
             productName = (TextView) view.findViewById(R.id.txt_product_name);
             productPrice = (TextView) view.findViewById(R.id.txt_product_price);
             productCheck = (ImageView) view.findViewById(R.id.img_select);
+            addSumView = (AddSumView) view.findViewById(R.id.add_sum);
         }
 
     }

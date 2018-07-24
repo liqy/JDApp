@@ -39,6 +39,14 @@ public class CartActivity extends AppCompatActivity implements ICartView {
     private void initView() {
         listView = (ExpandableListView) findViewById(R.id.cartList);
 
+        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+
+                return true;//返回true,表示不可点击
+            }
+        });
+
         //去掉默认箭头
         listView.setGroupIndicator(null);
 
