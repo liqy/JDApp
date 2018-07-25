@@ -108,19 +108,25 @@ public class CartAdapter extends BaseExpandableListAdapter {
     public void sumPrice() {
         int total = 0;//计算总价
         int uncheck = 0;
+
+        int psum = 0;//购物车中商品数量
+
         for (Seller seller : sellers) {
+            psum += seller.list.size();
             if (seller.isCheck) {//选中的店铺
                 for (Product product : seller.list) {
                     if (product.selected == 1) {//选中的产品的价格计算
                         total = total + product.price * product.num;
+                    } else {
+                        uncheck += 1;
                     }
                 }
             } else {
-                uncheck += 1;//未选中的加1
+                uncheck += seller.list.size();//未选中的加1
             }
         }
 
-        if (uncheck > 0) {//判断是否全选
+        if (uncheck < psum) {//判断是否全选
             isCheckAll = false;
         } else {
             isCheckAll = true;
