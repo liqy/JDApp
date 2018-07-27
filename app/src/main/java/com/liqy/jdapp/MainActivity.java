@@ -9,6 +9,7 @@ import com.liqy.jdapp.cart.CartActivity;
 import com.liqy.jdapp.cart.present.CartPresent;
 import com.liqy.jdapp.category.CategoryActivity;
 import com.liqy.jdapp.lbs.LBSActivity;
+import com.liqy.jdapp.mocktest.SearchActivity;
 import com.liqy.jdapp.test3.view.ShopListActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_lbs).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, LBSActivity.class));
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
     }

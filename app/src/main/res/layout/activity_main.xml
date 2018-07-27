@@ -27,7 +27,7 @@
 
     <Button
         android:id="@+id/btn_lbs"
-        android:text="定位"
+        android:text="月考模拟"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

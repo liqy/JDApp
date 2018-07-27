@@ -43,15 +43,17 @@
         <activity android:name=".test3.view.ShopListActivity" />
         <activity android:name=".cart.CartActivity" />
 
-        <!--高德地图API KEY-->
+        <!-- 高德地图API KEY -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="9ad3b07f00afdcf5600cb992eb32f345" />
-        <!--定位服务，无则没法定位-->
+        <!-- 定位服务，无则没法定位 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".lbs.LBSActivity"></activity>
-
+        <activity android:name=".lbs.LBSActivity" />
+        <activity android:name=".mocktest.SearchActivity" />
+        <activity android:name=".mocktest.ProductListActivity" />
+        <activity android:name=".mocktest.InfoActivity"></activity>
     </application>
 
 </manifest>

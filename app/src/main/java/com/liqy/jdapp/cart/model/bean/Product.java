@@ -17,7 +17,7 @@ public class Product {
     /**
      * 只能整型 字符串
      */
-    public int price;
+    public String price;
     public int pscid;
     public int selected;
     public int sellerid;

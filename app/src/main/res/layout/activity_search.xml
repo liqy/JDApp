@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".mocktest.SearchActivity">
+
+    <RelativeLayout
+        android:id="@+id/layout_search"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_search"
+            android:text="搜索"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_key"
+            android:layout_toLeftOf="@+id/btn_search"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/label1"
+        android:layout_width="match_parent"
+        android:text="最近搜索"
+        android:textColor="@android:color/black"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/layout_search"
+        android:layout_height="wrap_content" />
+
+    <!--流式布局-->
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/last_tag"
+        android:layout_below="@id/label1"
+        android:padding="16dp"
+        app:max_select="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/label2"
+        android:layout_width="match_parent"
+        android:text="搜索发现"
+        android:layout_margin="10dp"
+        android:layout_below="@id/last_tag"
+        android:textColor="@android:color/black"
+        android:layout_height="wrap_content" />
+
+    <!--流式布局-->
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/hot_tag"
+        android:layout_below="@id/label2"
+        android:padding="16dp"
+        app:max_select="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_clear"
+        android:text="清空历史记录"
+        android:layout_below="@id/hot_tag"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

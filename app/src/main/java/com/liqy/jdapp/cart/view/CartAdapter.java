@@ -116,7 +116,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
             if (seller.isCheck) {//选中的店铺
                 for (Product product : seller.list) {
                     if (product.selected == 1) {//选中的产品的价格计算
-                        total = total + product.price * product.num;
+                        int price=(int)Double.parseDouble(product.price);
+                        total = total + price * product.num;
                     } else {
                         uncheck += 1;
                     }
