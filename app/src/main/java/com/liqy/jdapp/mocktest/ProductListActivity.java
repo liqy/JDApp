@@ -77,6 +77,7 @@ public class ProductListActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProductListActivity.this, InfoActivity.class);
                 intent.putExtra("pid", product.pid);
                 intent.putExtra("title", product.title);
+                intent.putExtra("images",product.images);
                 startActivity(intent);
             }
         });
