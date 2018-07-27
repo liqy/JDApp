@@ -9,19 +9,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 import com.liqy.jdapp.R;
 import com.liqy.jdapp.cart.model.bean.Product;
-import com.liqy.jdapp.mocktest.model.ProductData;
+import com.liqy.jdapp.mocktest.present.IProductPresent;
+import com.liqy.jdapp.mocktest.present.ProductPresent;
+import com.liqy.jdapp.mocktest.view.IProductView;
 import com.liqy.jdapp.mocktest.view.ProductAdapter;
-import com.liqy.jdapp.network.OK;
-import com.liqy.jdapp.network.OkCallback;
 
-import java.net.URLEncoder;
+import java.util.List;
 
-public class ProductListActivity extends AppCompatActivity {
+public class ProductListActivity extends AppCompatActivity implements IProductView {
 
+
+    //定义P层
+    IProductPresent present;
 
     EditText edit_key;
     XRecyclerView xRecyclerView;
@@ -36,13 +38,20 @@ public class ProductListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_list);
         initView();
+
+        //获取传值
         key = getIntent().getStringExtra("key");
         edit_key.setText(key);
 
-        getData(key, page);
-
+        //初始化P层
+        setPresent(new ProductPresent(this));
+        //调用P层接口
+        present.getSearchData(key, page);
     }
 
+    /**
+     * 初始化界面
+     */
     private void initView() {
 
         edit_key = (EditText) findViewById(R.id.edit_key);
@@ -77,7 +86,7 @@ public class ProductListActivity extends AppCompatActivity {
                 Intent intent = new Intent(ProductListActivity.this, InfoActivity.class);
                 intent.putExtra("pid", product.pid);
                 intent.putExtra("title", product.title);
-                intent.putExtra("images",product.images);
+                intent.putExtra("images", product.images);
                 startActivity(intent);
             }
         });
@@ -88,38 +97,49 @@ public class ProductListActivity extends AppCompatActivity {
         xRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override
             public void onRefresh() {
-                page = 0;
-                adapter.clearData();
-                getData(key, page);
+                page = 0; //重置页数
+                adapter.clearData();//清空数据
+
+                //调用P层接口
+                present.getSearchData(key, page);
             }
 
             @Override
             public void onLoadMore() {
-                page++;
-                getData(key, page);
+                page++;//增加页数
+
+                //调用P层接口
+                present.getSearchData(key, page);
             }
         });
 
     }
 
-    public void getData(String keywords, int page) {
-        String key = URLEncoder.encode(keywords);
-        String url = "http://www.zhaoapi.cn/product/searchProducts?keywords=" + key + "&page=" + page + "&sort=0";
-        OK.getOk().doGet(url, new OkCallback() {
-            @Override
-            public void onUI(String json) {
-                Gson gson = new Gson();
-                ProductData data = gson.fromJson(json, ProductData.class);
-                adapter.addData(data.data);
 
-                xRecyclerView.loadMoreComplete();
-                xRecyclerView.refreshComplete();
-            }
+    /**
+     * 展示数据
+     * @param list
+     */
+    @Override
+    public void showData(List list) {
+        adapter.addData(list);
 
-            @Override
-            public void onFailed(String json) {
+        //TODO 完成，记得处理
+        xRecyclerView.loadMoreComplete();
+        xRecyclerView.refreshComplete();
+    }
 
-            }
-        });
+    @Override
+    public void showError(String json) {
+
+    }
+
+    /**
+     * 绑定P层
+     * @param iProductPresent
+     */
+    @Override
+    public void setPresent(IProductPresent iProductPresent) {
+        present=iProductPresent;
     }
 }
