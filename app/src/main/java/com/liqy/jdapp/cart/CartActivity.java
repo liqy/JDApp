@@ -60,6 +60,11 @@ public class CartActivity extends AppCompatActivity implements ICartView {
             @Override
             public void onClick(View view) {
                 //TODO 全选 反选
+                if (cartAdapter.isCheckAll()){
+                    cartAdapter.invertAll();//反选
+                }else {
+                    cartAdapter.checkAll();//全选
+                }
             }
         });
 
