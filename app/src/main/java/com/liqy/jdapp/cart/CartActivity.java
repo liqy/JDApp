@@ -39,15 +39,15 @@ public class CartActivity extends AppCompatActivity implements ICartView {
     private void initView() {
         listView = (ExpandableListView) findViewById(R.id.cartList);
 
+        //TODO 设置二级列表，不能关闭
         listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
-
                 return true;//返回true,表示不可点击
             }
         });
 
-        //去掉默认箭头
+        //TODO 去掉默认箭头
         listView.setGroupIndicator(null);
 
         cartAdapter = new CartAdapter(this);
@@ -60,7 +60,6 @@ public class CartActivity extends AppCompatActivity implements ICartView {
             @Override
             public void onClick(View view) {
                 //TODO 全选 反选
-                cartAdapter.checkAll();
             }
         });
 
@@ -77,11 +76,10 @@ public class CartActivity extends AppCompatActivity implements ICartView {
 
     @Override
     public void showCart(List<Seller> sellers) {
-        cartAdapter.addData(sellers);
-        cartAdapter.expandGroup(listView);
-        cartAdapter.checkAll();
+        cartAdapter.addData(sellers);//添加数据
+        cartAdapter.expandGroup(listView);//展开列表
+        cartAdapter.checkAll();//选中计算价格
 
-        cartAdapter.sumPrice();
     }
 
     @Override

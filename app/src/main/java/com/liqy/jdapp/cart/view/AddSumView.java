@@ -12,17 +12,16 @@ import com.liqy.jdapp.R;
 
 /**
  * @file FileName
- * JDApp
- *  * liqy
+ * 增加减少自定义控件
  * Copyright 星期二 YourCompany.
  */
 public class AddSumView extends LinearLayout {
 
     private Context context;
 
-    private ImageView add;
-    private ImageView reduce;
-    private TextView sum;
+    private ImageView add;//增加产品数量按钮
+    private ImageView reduce;//减少产品数量按钮
+    private TextView sum;//展示产品数量
 
     private int totalSum = 1;//记录商品数量
     private int limitSum = 5;//最多添加几件商品
@@ -30,8 +29,19 @@ public class AddSumView extends LinearLayout {
     //定义点击事件
     private SumClickListener listener;
 
+
+    /**
+     * 绑定点击事件
+     *
+     * @param listener
+     */
     public void setSumClickListener(SumClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setSum(int num) {
+        totalSum = num;//设置初试数量
+        this.sum.setText("" + num);
     }
 
     /**
@@ -47,13 +57,25 @@ public class AddSumView extends LinearLayout {
         }
     }
 
+    /**
+     * 构造函数
+     *
+     * @param context
+     * @param attrs
+     */
     public AddSumView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
+        //初始化UI
         initView(context);
 
     }
 
+    /**
+     * 舒适化视图
+     *
+     * @param context
+     */
     private void initView(Context context) {
         View view = View.inflate(context, R.layout.layout_add_sum_view, this);
         add = (ImageView) view.findViewById(R.id.add);

@@ -42,6 +42,8 @@ public class SearchActivity extends AppCompatActivity {
         list.add("麻辣小龙虾");
         list.add("汉堡");
         list.add("煎饼");
+        list.add("手机");
+        list.add("电脑");
 
         lastAdapter = new KeyAdapter(list);
         hotAdapter = new KeyAdapter(list);

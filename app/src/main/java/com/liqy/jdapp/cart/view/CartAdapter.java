@@ -18,48 +18,63 @@ import java.util.List;
 
 /**
  * @file FileName
- * JDApp
- *  * liqy
+ * 购物车
  * Copyright 星期一 YourCompany.
  */
 public class CartAdapter extends BaseExpandableListAdapter {
 
-    private List<Seller> sellers;
-    private LayoutInflater inflater;
-    private Context context;
+    private List<Seller> sellers;//商家列表
 
-    private TextView txt_total_price;//合计总价
-    private ImageView img_check_all;//全选状态UI更新
+    private LayoutInflater inflater;//初始化视图类
+    private Context context;//上下文环境
 
-    //全选标志
-    private boolean isCheckAll = false;//全选状态
+    private TextView txt_total_price;//合计总价展示控件
 
+    private ImageView img_check_all;//全选状态展示控件
+
+    private boolean isCheckAll = false;//全选状态标记
+
+    /**
+     * 构造方法
+     *
+     * @param context
+     */
     public CartAdapter(Context context) {
-        this.sellers = new ArrayList<>();
+        this.sellers = new ArrayList<>();//TODO 在这里初始化，避免空指针错误，下面在使用就不需要判断空指针
         this.context = context;
         this.inflater = LayoutInflater.from(context);
     }
 
+    /**
+     * 绑定顶部的总计价格控件
+     *
+     * @param txt_total_price
+     */
     public void setTotalPrice(TextView txt_total_price) {
         this.txt_total_price = txt_total_price;
     }
 
+    /**
+     * 绑定全选按钮的控件
+     *
+     * @param img_check_all
+     */
     public void setCheckAll(ImageView img_check_all) {
         this.img_check_all = img_check_all;
     }
 
     /**
-     * 添加数据
+     * 添加数据，这样写入数据，可以有效避免空指针操作
      *
      * @param list
      */
     public void addData(List<Seller> list) {
-        sellers.addAll(list);
-        notifyDataSetChanged();
+        sellers.addAll(list);//添加数据
+        notifyDataSetChanged();//刷新数据
     }
 
     /**
-     * 默认展开
+     * 默认全部展开
      *
      * @param listView
      */
@@ -70,120 +85,142 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     /**
-     * 默认执行一次全选，在第一次加载完数据时
-     *
-     * @param
+     * 计算所选产品价格,只要改变购物车，价格重新计算
      */
-    public void checkAll() {
+    private void sumPrice() {
+        int total = 0;//计算总价，最后赋值给控件
 
-        isCheckAll = !isCheckAll;//取反
-
-        //遍历店铺
-        for (Seller seller : sellers) {
-            seller.isCheck = isCheckAll;
-
-            //遍历产品
-            List<Product> products = seller.list;
-            for (Product product : products) {
-                if (isCheckAll) {
-                    product.selected = 1;
-                } else {
-                    product.selected = 0;
-                }
-            }
-        }
-
-        //全选按钮的处理
-        if (isCheckAll) {
-            img_check_all.setImageResource(R.drawable.ic_checked);
-        } else {
-            img_check_all.setImageResource(R.drawable.ic_uncheck);
-        }
-        notifyDataSetChanged();
-    }
-
-    /**
-     * 计算所选产品价格
-     */
-    public void sumPrice() {
-        int total = 0;//计算总价
-        int uncheck = 0;
-
-        int psum = 0;//购物车中商品数量
-
-        for (Seller seller : sellers) {
-            psum += seller.list.size();
+        for (Seller seller : sellers) {//遍历商家
             if (seller.isCheck) {//选中的店铺
                 for (Product product : seller.list) {
                     if (product.selected == 1) {//选中的产品的价格计算
-                        int price=(int)Double.parseDouble(product.price);
-                        total = total + price * product.num;
-                    } else {
-                        uncheck += 1;
+                        //解析价格
+                        int price = (int) Double.parseDouble(product.price);
+                        //累加价格
+                        total = total + (price * product.num);
                     }
                 }
-            } else {
-                uncheck += seller.list.size();//未选中的加1
             }
         }
 
-        if (uncheck < psum) {//判断是否全选
-            isCheckAll = false;
-        } else {
-            isCheckAll = true;
-        }
-
-        if (isCheckAll) {//全选的UI更新
-            img_check_all.setImageResource(R.drawable.ic_checked);
-        } else {
-            img_check_all.setImageResource(R.drawable.ic_uncheck);
-        }
-
+        //把最终结果赋值给控件
         txt_total_price.setText("合计￥" + total);
     }
 
+    /**
+     * 全选方案
+     */
+    public void checkAll() {
+        for (Seller seller : sellers) {//遍历商家
+            seller.isCheck = true;//设置选中
+            for (Product product : seller.list) {//遍历产品
+                product.selected = 1;//设置选中
+            }
+        }
+
+        //重新甲酸商品价格
+        sumPrice();
+
+        //刷新页面
+        notifyDataSetChanged();
+
+    }
+
+
+    /**
+     * 获取商家数量
+     *
+     * @return
+     */
     @Override
     public int getGroupCount() {
         return sellers.size();
     }
 
+    /**
+     * 商家下面有几个产品
+     *
+     * @param i
+     * @return
+     */
     @Override
     public int getChildrenCount(int i) {
         return sellers.get(i).list.size();
     }
 
+    /**
+     * 获取商家类
+     *
+     * @param i
+     * @return
+     */
     @Override
     public Seller getGroup(int i) {
         return sellers.get(i);
     }
 
+    /**
+     * 获取产品
+     *
+     * @param i
+     * @param i1
+     * @return
+     */
     @Override
     public Product getChild(int i, int i1) {
         return sellers.get(i).list.get(i1);
     }
 
+    /**
+     * 固定ID
+     *
+     * @param i
+     * @return
+     */
     @Override
     public long getGroupId(int i) {
         Seller seller = getGroup(i);
         return seller.sellerid;
     }
 
+    /**
+     * 获取ID
+     *
+     * @param i
+     * @param i1
+     * @return
+     */
     @Override
     public long getChildId(int i, int i1) {
         Product product = getChild(i, i1);
         return product.pid;
     }
 
+    /**
+     * 允许固定ID
+     *
+     * @return
+     */
     @Override
     public boolean hasStableIds() {
         return true;
     }
 
+    /**
+     * 初始化商家控件
+     *
+     * @param i
+     * @param b
+     * @param view
+     * @param viewGroup
+     * @return
+     */
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
 
         SellerViewHolder holder;
 
+        //优化
         if (view == null) {
             view = inflater.inflate(R.layout.item_cart_seller, viewGroup, false);
             holder = new SellerViewHolder(view);
@@ -192,39 +229,24 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder = (SellerViewHolder) view.getTag();
         }
 
-        final Seller seller = getGroup(i);
-        holder.sellerName.setText(seller.sellerName);
+        final Seller seller = getGroup(i);//获取商家
 
-        // 选择
+        holder.sellerName.setText(seller.sellerName);//商家名称
+
+        //商家选择按钮
         if (seller.isCheck) {
             holder.sellerCheck.setImageResource(R.drawable.ic_checked);
         } else {
             holder.sellerCheck.setImageResource(R.drawable.ic_uncheck);
         }
 
+        //设置选择按钮事件
         holder.sellerCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //当前商家列表
                 List<Product> products = seller.list;
 
-                if (seller.isCheck == true) {//修改店铺的选中状态
-                    seller.isCheck = false;
-                } else {
-                    seller.isCheck = true;
-                }
-
-                for (Product product : products) {//修改产品的选中状态
-                    if (seller.isCheck) {
-                        product.selected = 1;
-                    } else {
-                        product.selected = 0;
-                    }
-                }
-
-                //计算价格
-                sumPrice();
-
-                notifyDataSetChanged();
             }
         });
 
@@ -236,6 +258,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
         ProductViewHolder holder;
 
+        //优化
         if (view == null) {
             view = inflater.inflate(R.layout.item_cart_product, viewGroup, false);
             holder = new ProductViewHolder(view);
@@ -244,12 +267,15 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder = (ProductViewHolder) view.getTag();
         }
 
-        final Product product = getChild(i, i1);
+        final Product product = getChild(i, i1);//获取产品
 
-        holder.productName.setText(product.title);
-        holder.productPrice.setText("￥" + product.price);
+        holder.productName.setText(product.title);//产品名称
+        holder.productPrice.setText("￥" + product.price);//TODO 产品价格，一般定义为字符串，防止数据格式解析错误
 
-        //选中状态UI更新
+        //绑定产品数量
+        holder.addSumView.setSum(product.num);
+
+        //选中按钮状态UI更新
         if (product.selected == 1) {
             holder.productCheck.setImageResource(R.drawable.ic_checked);
         } else {
@@ -264,6 +290,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
             }
         });
 
+        /**
+         * 增加所购产品数量
+         */
         holder.addSumView.setSumClickListener(new AddSumView.SumClickListener() {
             @Override
             public void sumClick(int psum) {
@@ -288,34 +317,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
      * @param spos    商家位置
      */
     private void clickProductCheck(Product product, int spos) {
-        //设置选中状态
-        if (product.selected == 1) {
-            product.selected = 0;
-        } else {
-            product.selected = 1;
-        }
 
-        //获取当前商品的店铺信息
-        Seller seller = getGroup(spos);
-
-        int sum = 0;//统计产品选中数量
-
-        for (Product p : seller.list) {
-            if (p.selected == 1) {//判断当前店铺有无选中产品
-                sum = +1;//统计数量
-            }
-        }
-
-        if (sum == 0) {//无产品选中
-            seller.isCheck = false;
-        } else {//有产品选中
-            seller.isCheck = true;
-        }
-
-        //计算价格
-        sumPrice();
-
-        notifyDataSetChanged();
     }
 
     /**
