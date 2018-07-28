@@ -125,19 +125,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        //重新甲酸商品价格
-        sumPrice();
-
-        //刷新页面
-        notifyDataSetChanged();
-
-
-        //更新界面
-        if (isCheckAll) {
-            img_check_all.setImageResource(R.drawable.ic_checked);
-        } else {
-            img_check_all.setImageResource(R.drawable.ic_uncheck);
-        }
+        //更新UI
+        updateSelectUI();
 
     }
 
@@ -155,18 +144,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
             }
         }
 
-        //重新甲酸商品价格
-        sumPrice();
-
-        //刷新页面
-        notifyDataSetChanged();
-
-        //更新界面
-        if (isCheckAll) {
-            img_check_all.setImageResource(R.drawable.ic_checked);
-        } else {
-            img_check_all.setImageResource(R.drawable.ic_uncheck);
-        }
+        //更新UI
+        updateSelectUI();
     }
 
     /**
@@ -193,30 +172,19 @@ public class CartAdapter extends BaseExpandableListAdapter {
             } else {
                 seller.isCheck = false;
             }
+
         } else {
             product.selected = 1;//产品选中
             seller.isCheck = true;//有一个产品选中，商家即为选中状态
         }
 
-        isCheckAll = isQueryCheckAll();//设置全选状态
+        isCheckAll = isQueryCheckAll();//查询是否为全部选中状态
 
-        //TODO 检查是否存在未选中
-        //更新界面
-        if (isCheckAll) {
-            img_check_all.setImageResource(R.drawable.ic_checked);
-        } else {
-            img_check_all.setImageResource(R.drawable.ic_uncheck);
-        }
-
-        //刷新列表数据
-        notifyDataSetChanged();
-
-        //更新价格数据
-        sumPrice();
+        updateSelectUI();//更新UI
     }
 
     /**
-     * 检查是否有未选中的产品(TODO)
+     * 检查是否有未选中的产品
      */
     public boolean isQueryCheckAll() {
 
@@ -227,8 +195,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
             total += seller.list.size();//统计数量
             if (seller.isCheck) {//只需要遍历选中的商家
                 for (Product product : seller.list) {//遍历产品
-                    if (product.selected == 1) {
-                        checkNum += 1;
+                    if (product.selected == 1) {//如果选中产品
+                        checkNum += 1;//选中产品数量+1
                     }
                 }
             }
@@ -244,22 +212,32 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     private void clickSellerCheck(Seller seller) {
 
+        //改变选中状态
         if (seller.isCheck) {
             seller.isCheck = false;
         } else {
             seller.isCheck = true;
         }
 
+        //遍历产品
         for (Product product : seller.list) {
-            if (seller.isCheck) {
+            if (seller.isCheck) {//选中商家 ，就是全选
                 product.selected = 1;
             } else {
                 product.selected = 0;
             }
         }
 
-        isCheckAll = isQueryCheckAll();
+        isCheckAll = isQueryCheckAll();//查询是否为全部选中状态
+        //更新UI
+        updateSelectUI();
 
+    }
+
+    /**
+     * 更新选中状态UI
+     */
+    public void updateSelectUI() {
 
         //更新界面
         if (isCheckAll) {
